@@ -10,6 +10,7 @@ from api.utils.responses import response_with
 import api.utils.responses as resp
 from api.routes.routes_search import route_search
 import os
+import api.utils.database as db
 
 from functools import wraps
 import json
