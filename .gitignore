@@ -2,7 +2,7 @@
 __pycache__/
 *.py[cod]
 *$py.class
-
+src/.DS_Store
 # C extensions
 *.so
 
@@ -87,7 +87,6 @@ celerybeat-schedule
 *.sage.py
 
 # Environments
-.env
 .venv
 env/
 venv/
