@@ -3,3 +3,4 @@ flask-mysql
 flask_swagger
 flask_sqlalchemy
 PyMySQL
+gunicorn
