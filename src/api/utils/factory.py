@@ -47,10 +47,10 @@ def create_app(config):
         swag['info']['title'] = "Flask Starter API"
         return jsonify(swag)
 
-    db.init_app(app)
-    with app.app_context():
+    # db.init_app(app)
+    # with app.app_context():
         # from api.models import *
-        db.create_all()
+        # db.create_all()
 
     logging.basicConfig(stream=sys.stdout,
                         format='%(asctime)s|%(levelname)s|%(filename)s:%(lineno)s|%(message)s',
