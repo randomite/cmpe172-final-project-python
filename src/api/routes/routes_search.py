@@ -1,4 +1,4 @@
-from flask import Blueprint
+from flask import Blueprint, request, render_template
 from api.utils import responses as resp
 from api.utils.responses import response_with
 import pymysql
@@ -6,23 +6,45 @@ import pymysql
 route_search = Blueprint("route_search", __name__)
 
 
-@route_search.route("/search", methods=["GET"])
+@route_search.route("/search", methods=['POST', 'GET'])
 def search():
-    # resp = s.query(sql="SELECT * from employees")
-    # Open database connection
-    #RootRoot
     db = pymysql.connect(host='localhost', port=3306, user='root', passwd='RootRoot', db='employees')
-
-    # prepare a cursor object using cursor() method
     cursor = db.cursor()
 
-    # execute SQL query using execute() method.
-    cursor.execute("SELECT VERSION()")
+    if request.method == 'POST':
+        emp_no = request.form['emp_no']
+        emp_title = request.form['emp_title']
+        emp_salary = request.form['emp_salary']
 
-    # Fetch a single row using fetchone() method.
-    data = cursor.fetchone()
-    print("Database version : %s " % data)
+        if emp_title != '':
+            query = f'UPDATE titles SET title="{emp_title}" WHERE emp_no={emp_no}'
+            try:
+                cursor.execute(query)
+                db.commit()
+            except Exception as e:
+                print(e)
 
-    # disconnect from server
+        if emp_salary != '':
+            query = f'UPDATE salaries SET salary="{emp_salary}" WHERE emp_no={emp_no}'
+            try:
+                cursor.execute(query)
+                db.commit()
+            except Exception as e:
+                print(e)
+
+        # postToTwitter("$first_name $last_name was just promoted to $emp_title");
+
+    if request.method == 'GET':
+        first_name = request.args['firstName']
+        last_name = request.args['lastName']
+        db = pymysql.connect(host='localhost', port=3306, user='root', passwd='RootRoot', db='employees')
+        cursor.execute(f'SELECT employees.*, titles.title '
+                       f'FROM employees '
+                       f'INNER JOIN titles ON employees.emp_no = titles.emp_no '
+                       f'WHERE employees.first_name = "{first_name}" '
+                       f'AND employees.last_name = "{last_name}";')
+        data = cursor.fetchone()
+        print(data)
+
     db.close()
     return response_with(resp.SUCCESS_200, value={"data": "yo"})
