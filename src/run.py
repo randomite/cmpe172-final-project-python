@@ -10,10 +10,6 @@ if os.environ.get('WORK_ENV') == 'PROD':
 else:
     if __name__ == '__main__':
         app = create_app(DevelopmentConfig)
-        app.config['MYSQL_DATABASE_USER'] = 'root'
-        app.config['MYSQL_DATABASE_PASSWORD'] = 'root'
-        app.config['MYSQL_DATABASE_DB'] = 'employees'
-        app.config['MYSQL_DATABASE_HOST'] = 'localhost'
         app.run(port=5000, host="0.0.0.0", use_reloader=True)
 
 if __name__ == '__main__':

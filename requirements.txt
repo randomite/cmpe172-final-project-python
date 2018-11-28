@@ -6,3 +6,4 @@ python-dotenv
 requests
 authlib
 six
+PyMySQL
