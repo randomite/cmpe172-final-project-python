@@ -5,3 +5,4 @@ flask_sqlalchemy
 PyMySQL
 gunicorn
 nose2
+marshmallow_sqlalchemy
