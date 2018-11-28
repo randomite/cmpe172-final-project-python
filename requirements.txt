@@ -4,3 +4,4 @@ flask_swagger
 flask_sqlalchemy
 PyMySQL
 gunicorn
+nose2
