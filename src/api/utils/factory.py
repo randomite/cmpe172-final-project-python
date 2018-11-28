@@ -10,6 +10,7 @@ from api.utils.database import db
 from api.utils.responses import response_with
 import api.utils.responses as resp
 from api.routes.routes_search import route_search
+import os
 
 
 def create_app(config):
@@ -47,12 +48,13 @@ def create_app(config):
         swag['info']['title'] = "Flask Starter API"
         return jsonify(swag)
 
-    # db.init_app(app)
-    # with app.app_context():
-    #     # from api.models import *
-    #     db.create_all()
-    #
-    # logging.basicConfig(stream=sys.stdout,
-    #                     format='%(asctime)s|%(levelname)s|%(filename)s:%(lineno)s|%(message)s',
-    #                     level=logging.DEBUG)
+    if os.environ.get('WORK_ENV') == 'PROD':
+        db.init_app(app)
+        with app.app_context():
+            # from api.models import *
+            db.create_all()
+
+        logging.basicConfig(stream=sys.stdout,
+                            format='%(asctime)s|%(levelname)s|%(filename)s:%(lineno)s|%(message)s',
+                            level=logging.DEBUG)
     return app
