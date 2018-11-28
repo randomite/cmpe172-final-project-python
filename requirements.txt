@@ -7,3 +7,6 @@ requests
 authlib
 six
 PyMySQL
+gunicorn
+nose2
+marshmallow_sqlalchemy
