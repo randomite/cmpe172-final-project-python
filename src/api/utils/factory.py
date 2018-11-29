@@ -8,7 +8,7 @@ from flask import jsonify
 from flask_swagger import swagger
 from api.utils.responses import response_with
 import api.utils.responses as resp
-from api.routes.routes_search import route_search
+from api.routes.routes_employee import route_employee
 import os
 from api.utils.database import db
 
@@ -43,7 +43,7 @@ def create_app(config):
     app = Flask(__name__,static_url_path='/public', static_folder='./public')
     app.secret_key = constants.SECRET_KEY
     app.config.from_object(config)
-    app.register_blueprint(route_search, url_prefix="")
+    app.register_blueprint(route_employee, url_prefix="")
 
     # START GLOBAL HTTP CONFIGURATIONS
     @app.after_request

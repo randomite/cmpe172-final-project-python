@@ -3,11 +3,11 @@ from api.utils import responses as resp
 from api.utils.responses import response_with
 import pymysql
 
-route_search = Blueprint("route_search", __name__)
+route_employee = Blueprint("route_employee", __name__)
 
 
-@route_search.route("/search", methods=['POST', 'GET'])
-def search():
+@route_employee.route("/employee", methods=['POST', 'GET'])
+def employee():
     db = pymysql.connect(host='localhost', port=3306, user='root', passwd='RootRoot', db='employees')
     cursor = db.cursor()
 
