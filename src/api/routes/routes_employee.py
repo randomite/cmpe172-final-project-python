@@ -69,7 +69,6 @@ def post_to_twitter(message):
 
 
 def get_emp_name(emp_no, cursor):
-    #
     try:
         cursor.execute(f'SELECT first_name, last_name FROM employees WHERE emp_no={emp_no}')
         data = cursor.fetchone()
