@@ -29,7 +29,7 @@
                 <div class="logged-in-box auth0-box logged-in">
                     <h2>Welcome {{userinfo['name']}}</h2>
                     <img class="avatar" src="{{userinfo['picture']}}" style="float: right;"/>
-                    <pre>{{userinfo_pretty}}</pre>
+                    <!-- <pre>{{userinfo_pretty}}</pre> -->
                 </div>
             </div>
             <div class="container" style="margin-top: 2%">
@@ -156,6 +156,7 @@
               xhr.addEventListener("readystatechange", function () {
                   if (this.readyState === 4) {
                       console.log(this.responseText);
+                      alert("Successfully updated")
                   }
               });
 
