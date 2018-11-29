@@ -3,7 +3,6 @@ from api.utils import responses as resp
 from api.utils.responses import response_with
 import pymysql
 import tweepy
-import json
 from twilio.rest import Client
 
 route_employee = Blueprint("route_employee", __name__)
