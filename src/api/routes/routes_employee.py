@@ -4,6 +4,7 @@ from api.utils.responses import response_with
 import pymysql
 import tweepy
 import json
+from twilio.rest import Client
 
 route_employee = Blueprint("route_employee", __name__)
 
@@ -24,7 +25,9 @@ def employee():
                 cursor.execute(query)
                 db.commit()
                 name = get_emp_name(emp_no, cursor)
-                post_to_twitter(f'{name[0]} {name[1]} was just promoted to {emp_title}!')
+                message = f'{name[0]} {name[1]} was just promoted to {emp_title}!'
+                post_to_twitter(message)
+                send_sms(message)
             except Exception as e:
                 print(e)
 
@@ -56,6 +59,16 @@ def employee():
 
     db.close()
     return response_with(resp.SUCCESS_200, value={"data": "yo"})
+
+
+def send_sms(message):
+    account_sid = 'ACa439f7f51fb18d06389f4fa701bdc40e'
+    auth_token = '6ed41c6c810733ae848311c77f3b7c8a'
+    client = Client(account_sid, auth_token)
+
+    message = client.messages \
+        .create(body=message, from_='+15106069597', to='+14087442075')
+    print(f'Message sent. Status: {message.status}')
 
 
 def get_api(cfg):

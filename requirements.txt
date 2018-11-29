@@ -11,3 +11,4 @@ gunicorn
 nose2
 marshmallow_sqlalchemy
 tweepy
+twilio
