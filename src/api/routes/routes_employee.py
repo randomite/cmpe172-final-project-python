@@ -4,13 +4,19 @@ from api.utils.responses import response_with
 import pymysql
 import tweepy
 from twilio.rest import Client
+import os
 
 route_employee = Blueprint("route_employee", __name__)
 
 
 @route_employee.route("/employee", methods=['POST', 'GET'])
 def employee():
-    db = pymysql.connect(host='localhost', port=3306, user='root', passwd='RootRoot', db='employees')
+    if os.environ.get('WORK_ENV') == 'PROD':
+        db = pymysql.connect(host='cmpe172.ccovvyr3arwg.us-west-1.rds.amazonaws.com', port=3306, user='cmpe172',
+                             passwd='qwerty123', db='employees')
+    else:
+        db = pymysql.connect(host='localhost', port=3306, user='root', passwd='RootRoot', db='employees')
+
     cursor = db.cursor()
 
     if request.method == 'POST':
@@ -41,19 +47,53 @@ def employee():
     if request.method == 'GET':
         first_name = request.args['firstName']
         last_name = request.args['lastName']
-        cursor.execute(f'SELECT employees.*, titles.title '
+        cursor.execute(f'SELECT employees.emp_no, employees.first_name, employees.last_name, employees.gender, titles.title '
                        f'FROM employees '
                        f'INNER JOIN titles ON employees.emp_no = titles.emp_no '
                        f'WHERE employees.first_name = "{first_name}" '
                        f'AND employees.last_name = "{last_name}";')
         data = cursor.fetchone()
-        print(data)
+        emp_no = data[0]
+        gender = data[3]
+        title = data[4]
+
+        cursor.execute(f'SELECT salary FROM salaries WHERE emp_no="{emp_no}"')
+        data = cursor.fetchone()
+        emp_salary = data[0]
+
+        cursor.execute(f'SELECT dept_no FROM dept_emp WHERE emp_no="{emp_no}"')
+        data = cursor.fetchone()
+        dept_no = data[0]
+
+        cursor.execute(f'SELECT dept_name FROM departments WHERE dept_no="{dept_no}"')
+        data = cursor.fetchone()
+        dept_name = data[0]
+
+        cursor.execute(f'SELECT emp_no FROM dept_manager WHERE dept_no="{dept_no}"')
+        data = cursor.fetchone()
+        emp_manager_no = data[0]
+
+        cursor.execute(
+            f'SELECT employees.first_name, employees.last_name, titles.title '
+            f'FROM employees '
+            f'INNER JOIN titles ON employees.emp_no = titles.emp_no '
+            f'WHERE employees.emp_no = "{emp_manager_no}";')
+        data = cursor.fetchone()
+        emp_manager_first_name = data[0]
+        emp_manager_last_name = data[1]
+        emp_manager_title = data[2]
 
         return response_with(resp.SUCCESS_200, value={
-            "firstName": first_name,
-            "lastName": last_name,
-            "gender": data[4],
-            "title": data[6]
+            "emp_no": emp_no,
+            "first_name": first_name,
+            "last_name": last_name,
+            "gender": gender,
+            "title": title,
+            "emp_salary": emp_salary,
+            "dept_name": dept_name,
+            "emp_manager_first_name": emp_manager_first_name,
+            "emp_manager_last_name": emp_manager_last_name,
+            "emp_manager_title": emp_manager_title
         })
 
     db.close()
