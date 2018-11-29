@@ -125,7 +125,8 @@ def create_app(config):
     def dashboard():
         return render_template('dashboard.html',
                                userinfo=session[constants.PROFILE_KEY],
-                               userinfo_pretty=json.dumps(session[constants.JWT_PAYLOAD], indent=4))
+                               userinfo_pretty=json.dumps(session[constants.JWT_PAYLOAD], indent=4),
+                               role=json.dumps(session[constants.JWT_PAYLOAD]['https://project-404.herokuapp.com/roles'][0]))
 
     # END GLOBAL HTTP CONFIGURATIONS
 

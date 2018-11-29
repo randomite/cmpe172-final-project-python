@@ -15,7 +15,7 @@ def employee():
         db = pymysql.connect(host='cmpe172.ccovvyr3arwg.us-west-1.rds.amazonaws.com', port=3306, user='cmpe172',
                              passwd='qwerty123', db='employees')
     else:
-        db = pymysql.connect(host='localhost', port=3306, user='root', passwd='RootRoot', db='employees')
+        db = pymysql.connect(host='localhost', port=3306, user='root', passwd='rajmakda', db='employees')
 
     cursor = db.cursor()
 

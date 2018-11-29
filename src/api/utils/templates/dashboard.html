@@ -3,21 +3,173 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
         <!-- font awesome from BootstrapCDN -->
-        <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
-        <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
-        <link href="/public/app.css" rel="stylesheet">
-    </head>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+    crossorigin="anonymous">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU"
+    crossorigin="anonymous">
+</head>
     <body class="home">
-        <div class="container">
+        <p hidden id="role">{{role}}</p>
+        <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark" style="background-color: #e3f2fd;">
+            <a class="navbar-brand" href="#">Team 404</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                    <a class="nav-link" href="https://cmpe172team404.auth0.com/samlp/dWn2IgrO6JoKcXHCg2bEy3lZqq4Zo6V6" style="color: #e3f2fd"><i
+                                            class="fab fa-dropbox"></i> Dropbox<span class="sr-only">(current)</span></a>
+                </ul>
+                <a class="nav-link" href="/logout" style="color: #e3f2fd">Logout<span class="sr-only">(current)</span></a>
+            </div>
+        </nav>
+        <div class="container" style="margin-top: 7%">
             <div class="login-page clearfix">
                 <div class="logged-in-box auth0-box logged-in">
-                    <h1 id="logo">Project 404</h1>
-                    <img class="avatar" src="{{userinfo['picture']}}"/>
                     <h2>Welcome {{userinfo['name']}}</h2>
+                    <img class="avatar" src="{{userinfo['picture']}}" style="float: right;"/>
                     <pre>{{userinfo_pretty}}</pre>
-                    <a id="qsLogoutBtn" class="btn btn-primary btn-lg btn-logout" href="/logout">Logout</a>
+                </div>
+            </div>
+            <div class="container" style="margin-top: 2%">
+                <h1 class="lead">Search Employee Directory</h1>
+                <div class="input-group">
+                    <input type="text" class="form-control" id="first" placeholder="First Name" style="margin-right: 5px" />
+                    <input type="text" class="form-control" id="last" placeholder="Last Name" style="margin-right: 5px" />
+                    <button type="button" class="btn btn-primary" onclick="search()">Search</button>
+                </div>
+                <div id="result" style="margin-top: 3%">
+                    <div class="row">
+                        <div class="col-md-12">
+                                <div class="form-group row">
+                                    <label for="employee" class="col-2 col-form-label">Employee ID</label>
+                                    <div class="col-5">
+                                        <input disabled id="username" name="employeeId" class="form-control here" required="required" type="text">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="firstname" class="col-2 col-form-label">First Name</label>
+                                    <div class="col-5">
+                                        <input disabled id="firstname" name="firstname" class="form-control here" type="text">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="lastname" class="col-2 col-form-label">Last Name</label>
+                                    <div class="col-5">
+                                        <input disabled id="lastname" name="lastname" class="form-control here" type="text">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="title" class="col-2 col-form-label">Title</label>
+                                    <div class="col-5">
+                                        <select id="title" name="title" class="form-control here" disabled>
+                                            <option value=""></option>
+                                            <option value="staff">Staff</option>
+                                            <option value="engineer">Engineer</option>
+                                            <option value="seniorstaff">Senior Staff</option>
+                                            <option value="assistantengineer">Assistant Engineer</option>
+                                            <option value="techniqueleader">Technique Leader</option>
+                                            <option value="manager">Manager</option>
+                                            <option value="seniorengineer">Senior Engineer</option>
+                                        </select>
+                                    </div>
+                                    <button hidden id="editTitle" name="editTitle" class="btn btn-primary" onclick="update()">Edit</button>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="gender" class="col-2 col-form-label">Gender</label>
+                                    <div class="col-5">
+                                        <input disabled id="gender" name="text" class="form-control here" type="text">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="department" class="col-2 col-form-label">Department</label>
+                                    <div class="col-5">
+                                        <input disabled id="department" name="department" class="form-control here" required="required" type="text">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="manager" class="col-2 col-form-label">Manager</label>
+                                    <div class="col-5">
+                                        <input disabled id="manager" name="manager" class="form-control here" required="required" type="text">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="managerTitle" class="col-2 col-form-label">Manager's Title</label>
+                                    <div class="col-5">
+                                        <input disabled id="managerTitle" name="managerTitle" class="form-control here" required="required" type="text">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="salary" class="col-2 col-form-label">Salary</label>
+                                    <div class="col-5">
+                                        <input disabled id="salary" name="salary" class="form-control here" type="text">
+                                    </div>
+                                        <button hidden id="editSalary" name="editSalary" class="btn btn-primary" onclick="update()">Edit</button>                                        
+                                </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
+        <script>
+
+          function search() {
+            var firstname = document.getElementById("first").value;
+            var lastname = document.getElementById("last").value;
+            fetch("https://project-404.herokuapp.com/employee?firstName="+firstname+"&lastName="+lastname)
+              .then(function(res) {
+                return res.json();
+              }).then(function(res) {
+                  console.log(res)
+                  document.getElementById("username").value = res.emp_no;
+                  document.getElementById("firstname").value = res.first_name;
+                  document.getElementById("lastname").value = res.last_name;
+                  document.getElementById("title").value = `${String(res.title).replace(/\s+/g, '').toLowerCase()}`;
+                  document.getElementById("gender").value = res.gender;
+                  document.getElementById("department").value = res.dept_name;
+                  document.getElementById("manager").value = res.emp_manager_first_name + " " +res.emp_manager_last_name;
+                  document.getElementById("managerTitle").value = res.emp_manager_title;
+                  document.getElementById("salary").value = res.emp_salary;
+              })               
+          }
+
+          var role = document.getElementById('role').innerHTML;
+          if (role == "\"admin\"") {
+              document.getElementById("editTitle").removeAttribute("hidden")
+              document.getElementById("editSalary").removeAttribute("hidden")
+              document.getElementById("title").removeAttribute("disabled")
+              document.getElementById("salary").removeAttribute("disabled")
+          }
+
+          function update() {
+              let newTitle = document.getElementById("title").value
+              let newSalary = document.getElementById("salary").value
+              let id = document.getElementById("username").value
+              var data = new FormData();
+              data.append("emp_no", id);
+              data.append("emp_title", newTitle);
+              data.append("emp_salary", newSalary);
+
+              var xhr = new XMLHttpRequest();
+
+              xhr.addEventListener("readystatechange", function () {
+                  if (this.readyState === 4) {
+                      console.log(this.responseText);
+                  }
+              });
+
+              xhr.open("POST", "https://project-404.herokuapp.com/employee");
+
+              xhr.send(data);
+          }
+
+        </script>
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+            crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+            crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+            crossorigin="anonymous"></script>
     </body>
 </html>
