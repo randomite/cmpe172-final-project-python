@@ -3,6 +3,7 @@ from api.utils import responses as resp
 from api.utils.responses import response_with
 import pymysql
 import tweepy
+import json
 
 route_employee = Blueprint("route_employee", __name__)
 
@@ -45,6 +46,13 @@ def employee():
                        f'AND employees.last_name = "{last_name}";')
         data = cursor.fetchone()
         print(data)
+
+        return response_with(resp.SUCCESS_200, value={
+            "firstName": first_name,
+            "lastName": last_name,
+            "gender": data[4],
+            "title": data[6]
+        })
 
     db.close()
     return response_with(resp.SUCCESS_200, value={"data": "yo"})
