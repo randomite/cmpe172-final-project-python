@@ -68,6 +68,7 @@ def requires_auth(f):
 
   return decorated
 
+
 # /server.py
 
 @app.route('/dashboard')
