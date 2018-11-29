@@ -38,8 +38,10 @@
             var lastname = document.getElementById("last").value;
             fetch("http://localhost:5000/employee?firstName="+firstname+"&lastName="+lastname)
               .then(function(res) {
-                console.log(res);
-              })
+                return res.json();
+              }).then(function(res) {
+                  console.log(res);
+              })               
           }
 
         </script>

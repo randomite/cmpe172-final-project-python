@@ -10,7 +10,7 @@ route_employee = Blueprint("route_employee", __name__)
 
 @route_employee.route("/employee", methods=['POST', 'GET'])
 def employee():
-    db = pymysql.connect(host='localhost', port=3306, user='root', passwd='RootRoot', db='employees')
+    db = pymysql.connect(host='localhost', port=3306, user='root', passwd='rajmakda', db='employees')
     cursor = db.cursor()
 
     if request.method == 'POST':
