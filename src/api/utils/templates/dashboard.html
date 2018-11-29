@@ -13,11 +13,35 @@
                 <div class="logged-in-box auth0-box logged-in">
                     <h1 id="logo">Project 404</h1>
                     <img class="avatar" src="{{userinfo['picture']}}"/>
+
                     <h2>Welcome {{userinfo['name']}}</h2>
+                    <div class="container">
+
+                        <h1 class="display-4">Employee Directory</h1>
+
+                      <div class="form-group">
+                        <label for="search">Search</label>
+                        <input type="text" class="form-control" id="first" placeholder="First Name">
+                        <input type="text" class="form-control" id="last" placeholder="Last Name">
+                      </div>
+                          <button type="button" class="btn btn-primary" onclick="search()">Search</button>
+                    </div>
                     <pre>{{userinfo_pretty}}</pre>
                     <a id="qsLogoutBtn" class="btn btn-primary btn-lg btn-logout" href="/logout">Logout</a>
                 </div>
             </div>
         </div>
+        <script>
+
+          function search() {
+            var firstname = document.getElementById("first").value;
+            var lastname = document.getElementById("last").value;
+            fetch("http://localhost:5000/employee?firstName="+firstname+"&lastName="+lastname)
+              .then(function(res) {
+                console.log(res);
+              })
+          }
+
+        </script>
     </body>
 </html>
